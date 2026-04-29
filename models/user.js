@@ -30,13 +30,13 @@ const UserSchema = new mongoose.Schema({
     },
     age: {
         type: Number,
-        required: true,
+        required: true
 
     },
     active: {
-        type: String,
+        type: Boolean,
         required: true,
-        default: "active"
+        default : true
     },
 
 
