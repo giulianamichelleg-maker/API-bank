@@ -36,9 +36,12 @@ const UserSchema = new mongoose.Schema({
     active: {
         type: Boolean,
         required: true,
-        default : true
+        default: true
     },
-
-
-});
+},
+    {
+        collection: "users",
+        timestamps: true,
+    }
+);
 export default mongoose.model("User", UserSchema);

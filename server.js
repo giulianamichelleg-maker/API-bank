@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";        
+import accountsRoutes from "./routes/accountsRoutes.js";
 
 dotenv.config();
 
@@ -15,6 +16,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/users", userRoutes);
+
+app.use("/accounts", accountsRoutes);
 
 const startServer = async () => {
   try {
