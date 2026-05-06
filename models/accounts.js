@@ -13,9 +13,7 @@ const AccountSchema = new mongoose.Schema({
     },
     agency: {
         type: Number,
-        
-        unique: true,
-        default: 1
+        default: 1,
     },
     typeAccount: {
         type: String,
@@ -44,6 +42,10 @@ const AccountSchema = new mongoose.Schema({
         default: false
 
     },
+    deposits:{
+        type: Number,
+        
+    }
 },
     {
         collection: "accounts",
