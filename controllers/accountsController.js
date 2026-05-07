@@ -56,14 +56,15 @@ res.status(200).json({balance: account.balance})
         next(error)
     }
 }
-const accountDeposit = async(req, res,next)=>{
-    try{
-        const account = await accountsService.accountDeposit(req.params.id, req.body.amount);
+const accountDeposit = async (req, res, next) => {
+    try {
+        const account = await accountsService.accountDeposit(req.params.id, req.body);
         res.status(200).json(account);
+
     }catch(error){
         next(error)
     }
-} 
+}
 export default {
     createAccount,
     getAllAccounts,

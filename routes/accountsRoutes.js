@@ -9,5 +9,6 @@ router.put("/:id", accountsController.accountUpdate);
 router.get("/number/:accountNumber", accountsController.accountNumber);
 router.get("/:id/balance", accountsController.accountBalance);
 router.post("/:id/deposit", accountsController.accountDeposit);
+router.post("/:id/statemend", accountsController.accountsStatement);
 
 export default router;

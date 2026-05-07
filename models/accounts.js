@@ -22,11 +22,10 @@ const AccountSchema = new mongoose.Schema({
     },
     balance: {
         type: Number,
-      
         default: 0
 
     },
-    limit: {
+    limit: { 
         type: Number,
         required: true,
         default: 1000
