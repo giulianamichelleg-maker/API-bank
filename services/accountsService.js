@@ -89,7 +89,41 @@ const accountsStatement = async (id) => {
     
 
 }
+const accountWithdraw = async(id, amount)=>{
+    const account = await Account.findById(id);
+    if(!account){
+        const error = new Error("Conta não encontrada");
+        error.statusCode = 404;
+        throw error;
+    }
+    account.balance -= amount;
+    await account.save();
+    return account;
+}
 
+const accountTransfer = async (fromId, toId, amount)=>{
+    const fromAccount = await Account.findById(fromId);
+    const toAccount = await Account.findById(toId);
+if(!fromAccount || !toAccount){
+        const error = new Error ("Conta não encontrada");
+            error.statusCode = 404;
+            throw error;
+    }
+    if (fromAccount.balance < amount){
+        const error = new Error ("Saldo insuficiênte")
+        error.statusCode = 404;
+        throw error;
+    }
+   fromAccount.balance -= amount;
+   toAccount.balance += amount 
+
+   await fromAccount.save();
+   await toAccount.save();
+   return {
+    fromAccount, toAccount
+   }
+
+}
 export default {
     createAccount,
     getAllAccounts,
@@ -97,5 +131,7 @@ export default {
     accountUpdate,
     accountNumber,
     accountBalance,
-    accountDeposit
+    accountDeposit,
+    accountWithdraw,
+    accountTransfer
 }

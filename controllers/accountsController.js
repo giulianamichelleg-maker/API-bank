@@ -64,7 +64,33 @@ const accountDeposit = async (req, res, next) => {
     }catch(error){
         next(error)
     }
+<<<<<<< HEAD
 }
+=======
+} 
+const accountWithdraw = async( req, res, next)=>{
+    try{
+const accountWithdraw = await accountsService.accountWithdraw(req.params.id, req.body.amount);
+res.status(200).json(accountWithdraw);
+    } catch(error){
+        next(error)
+    }
+}
+const accountTransfer = async (req, res, next)=>{
+    const fromId = req.params.id
+    const toId = req.params.toId
+    const amount = req.body.amount
+    try{
+const accountTransfer = await accountsService.accountTransfer( fromId, toId, amount);
+    
+res.status(200).json(accountTransfer);
+} catch (error){
+next(error)
+}
+}
+
+
+>>>>>>> b1ff2de (a)
 export default {
     createAccount,
     getAllAccounts,
@@ -72,5 +98,7 @@ export default {
     accountUpdate,
     accountNumber,
     accountBalance,
-    accountDeposit
+    accountDeposit,
+    accountWithdraw,
+    accountTransfer
 }

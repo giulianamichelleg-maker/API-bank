@@ -9,6 +9,12 @@ router.put("/:id", accountsController.accountUpdate);
 router.get("/number/:accountNumber", accountsController.accountNumber);
 router.get("/:id/balance", accountsController.accountBalance);
 router.post("/:id/deposit", accountsController.accountDeposit);
+<<<<<<< HEAD
 router.post("/:id/statemend", accountsController.accountsStatement);
+=======
+router.post("/:id/withdraw", accountsController.accountWithdraw);
+router.post("/transfer", accountsController.accountTransfer);
+
+>>>>>>> b1ff2de (a)
 
 export default router;

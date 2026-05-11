@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import mongoose from "mongoose";
 
 const transactionsSchema = new mongoose.Schema({
@@ -50,3 +51,6 @@ const transactionsSchema = new mongoose.Schema({
     }
 )
 export default mongoose.model("Transaction", transactionsSchema);
+=======
+//import mongoose from "mongoose";
+>>>>>>> b1ff2de (a)
