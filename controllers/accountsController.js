@@ -3,56 +3,56 @@ import accountsService from "../services/accountsService.js";
 const createAccount = async (req, res, next) => {
     try {
         const newAccount = await accountsService.createAccount(req.body);
-         res.status(201).json(newAccount);
+        res.status(201).json(newAccount);
     } catch (error) {
         next(error);
     }
 }
-const getAllAccounts = async (req , res , next)=>{
-    try{
-const accountList = await accountsService.getAllAccounts(req.body);
-res.status(200).json(accountList);
-    }catch(error){
+const getAllAccounts = async (req, res, next) => {
+    try {
+        const accountList = await accountsService.getAllAccounts(req.body);
+        res.status(200).json(accountList);
+    } catch (error) {
         next(error)
     }
 }
-const getAccountId = async (req , res, next)=>{
-    try{
-const account = await accountsService.getAccountId(req.params.id);
-res.status(200).json(account);
-    }catch(error){
+const getAccountId = async (req, res, next) => {
+    try {
+        const account = await accountsService.getAccountId(req.params.id);
+        res.status(200).json(account);
+    } catch (error) {
         next(error)
     }
 }
-const accountUpdate = async (req , res, next)=>{
-    try{
-const newAccount = await accountsService.accountUpdate(req.params.id, req.body);
-res.status(200).json(newAccount);
-    }catch(error){
+const accountUpdate = async (req, res, next) => {
+    try {
+        const newAccount = await accountsService.accountUpdate(req.params.id, req.body);
+        res.status(200).json(newAccount);
+    } catch (error) {
         next(error)
+    }
 }
-}
-const accountNumber = async (req, res, next)=>{
-    try{
+const accountNumber = async (req, res, next) => {
+    try {
         const account = await accountsService.accountNumber(req.params.accountNumber);
-        if(!account){
-            return res.status(404).json({message: "Conta não encontrada"})
+        if (!account) {
+            return res.status(404).json({ message: "Conta não encontrada" })
         }
         res.status(200).json(account);
 
-    }catch(error){
+    } catch (error) {
         next(error)
     }
 }
 
-const accountBalance = async(req , res, next)=>{
-    try{
-const account = await accountsService.getAccountId(req.params.id);
-if(!account){
-    return res.status(404).json({message: "Conta não encontrada"})
-}
-res.status(200).json({balance: account.balance})
-    }catch(error){
+const accountBalance = async (req, res, next) => {
+    try {
+        const account = await accountsService.getAccountId(req.params.id);
+        if (!account) {
+            return res.status(404).json({ message: "Conta não encontrada" })
+        }
+        res.status(200).json({ balance: account.balance })
+    } catch (error) {
         next(error)
     }
 }
@@ -61,36 +61,38 @@ const accountDeposit = async (req, res, next) => {
         const account = await accountsService.accountDeposit(req.params.id, req.body);
         res.status(200).json(account);
 
-    }catch(error){
-        next(error)
-    }
-<<<<<<< HEAD
-}
-=======
-} 
-const accountWithdraw = async( req, res, next)=>{
-    try{
-const accountWithdraw = await accountsService.accountWithdraw(req.params.id, req.body.amount);
-res.status(200).json(accountWithdraw);
-    } catch(error){
+    } catch (error) {
         next(error)
     }
 }
-const accountTransfer = async (req, res, next)=>{
-    const fromId = req.params.id
-    const toId = req.params.toId
-    const amount = req.body.amount
-    try{
-const accountTransfer = await accountsService.accountTransfer( fromId, toId, amount);
-    
-res.status(200).json(accountTransfer);
-} catch (error){
-next(error)
+
+const accountWithdraw = async (req, res, next) => {
+    try {
+        const accountWithdraw = await accountsService.accountWithdraw(req.params.id, req.body.amount);
+        res.status(200).json(accountWithdraw);
+    } catch (error) {
+        next(error)
+    }
 }
+const accountTransfer = async (req, res, next) => {
+    try {
+        const accountTransfer = await accountsService.accountTransfer(req.body)
+
+        res.status(200).json(accountTransfer);
+    } catch (error) {
+        next(error)
+    }
+}
+const accountsStatement = async (req, res, next) => {
+    try {
+        const accountsStatement = await accountsService.accountsStatement(req.params.id, req.body);
+        res.status(200).json(accountsStatement);
+    } catch (error) {
+        next(error)
+    }
 }
 
 
->>>>>>> b1ff2de (a)
 export default {
     createAccount,
     getAllAccounts,
@@ -100,5 +102,6 @@ export default {
     accountBalance,
     accountDeposit,
     accountWithdraw,
-    accountTransfer
+    accountTransfer,
+    accountsStatement
 }

@@ -50,48 +50,40 @@ const accountNumber = async (accountNumber) => {
     return account;
 }
 const accountDeposit = async (id, data) => {
-        const account = await Account.findById(id);
-        if (!account) {
-            throw new Error("Conta não encontrada");
-        }
-
-       
-
-         const { value, description } = data;
-
-        if (value <= 0) {
-            throw new Error("Valor inválido");
-        }
-
-        account.balance += value;
-
-        await Transaction.create({
-            accountId: id,
-            targetAccountId: id,
-            typeTransaction: "deposit",
-            value: value,
-            previousBalance: account.balance ,
-            currentBalance: account.balance + value,
-            description: description,
-            status: "completed"
-        });
-        await account.save();
-
-        return account;
-}
-const accountsStatement = async (id) => {
     const account = await Account.findById(id);
     if (!account) {
         throw new Error("Conta não encontrada");
     }
-    const transactions = await Transaction.find({ accountId: id })
-    return transactions;
-    
 
+
+
+    const { value, description } = data;
+
+    if (value <= 0) {
+        throw new Error("Valor inválido");
+    }
+
+    account.balance += value;
+
+    await Transaction.create({
+        accountId: id,
+        targetAccountId: id,
+        typeTransaction: "deposit",
+        value: value,
+        previousBalance: account.balance,
+        currentBalance: account.balance + value,
+        description: description,
+        status: "completed"
+    });
+    await account.save();
+
+    return account;
 }
-const accountWithdraw = async(id, amount)=>{
+
+
+const accountWithdraw = async (id, amount) => {
     const account = await Account.findById(id);
-    if(!account){
+    if (!account) {
         const error = new Error("Conta não encontrada");
         error.statusCode = 404;
         throw error;
@@ -101,28 +93,33 @@ const accountWithdraw = async(id, amount)=>{
     return account;
 }
 
-const accountTransfer = async (fromId, toId, amount)=>{
+const accountTransfer = async (data) => {
+    const { fromId, toId, value, description } = data ;
     const fromAccount = await Account.findById(fromId);
     const toAccount = await Account.findById(toId);
-if(!fromAccount || !toAccount){
-        const error = new Error ("Conta não encontrada");
-            error.statusCode = 404;
-            throw error;
-    }
-    if (fromAccount.balance < amount){
-        const error = new Error ("Saldo insuficiênte")
+    if (!fromAccount || !toAccount) {
+        const error = new Error("Conta não encontrada");
         error.statusCode = 404;
         throw error;
     }
-   fromAccount.balance -= amount;
-   toAccount.balance += amount 
+    if (fromAccount.balance < value) {
+        const error = new Error("Saldo insuficiênte")
+        error.statusCode = 404;
+        throw error;
+    }
+    fromAccount.balance -= value;
+    toAccount.balance += value;
 
-   await fromAccount.save();
-   await toAccount.save();
-   return {
-    fromAccount, toAccount
-   }
+    await fromAccount.save();
+    await toAccount.save();
+    return {
+        fromAccount, toAccount
+    }
 
+}
+const accountsStatement = async (id, data)=>{
+    const {}
+    const account = await Account.findById(id)
 }
 export default {
     createAccount,
@@ -133,5 +130,6 @@ export default {
     accountBalance,
     accountDeposit,
     accountWithdraw,
-    accountTransfer
+    accountTransfer,
+    accountsStatement
 }
