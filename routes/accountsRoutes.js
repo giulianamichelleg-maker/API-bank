@@ -11,7 +11,9 @@ router.get("/:id/balance", accountsController.accountBalance);
 router.post("/:id/deposit", accountsController.accountDeposit);
 router.post("/:id/withdraw", accountsController.accountWithdraw);
 router.post("/transfer", accountsController.accountTransfer);
-router.post("/:id/statement", accountsController.accountsStatement);
+router.get("/:id/statement", accountsController.accountsStatement);
+router.post("/:id/withdraw/simulate", accountsController.accountWithdrawSimulate);
+router.post("/transfer/simulate", accountsController.accountTransferSimulate);
 
 
 

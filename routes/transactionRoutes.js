@@ -1,6 +1,6 @@
-//port express from "express";
-//port transactionController from "../controllers/transactionController.js";
-//st router = express.Router();
+import express from "express";
+import transactionController from "../controllers/transactionController.js";
+const router = express.Router();
 
-
-//port default router;
+router.get("/", transactionController.transactionsFind);
+export default router;

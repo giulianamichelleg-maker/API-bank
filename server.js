@@ -1,11 +1,12 @@
-import {setServers} from "node:dns/promises";
+import { setServers } from "node:dns/promises";
 setServers(["1.1.1.1", "8.8.8.8"]);
 
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import userRoutes from "./routes/userRoutes.js";        
+import userRoutes from "./routes/userRoutes.js";
 import accountsRoutes from "./routes/accountsRoutes.js";
+import transactionRoutes from "./routes/transactionRoutes.js"
 
 
 dotenv.config();
@@ -22,6 +23,8 @@ app.get("/", (req, res) => {
 app.use("/users", userRoutes);
 
 app.use("/accounts", accountsRoutes);
+
+app.use("/transactions", transactionRoutes);
 
 const startServer = async () => {
   try {

@@ -85,14 +85,28 @@ const accountTransfer = async (req, res, next) => {
 }
 const accountsStatement = async (req, res, next) => {
     try {
-        const accountsStatement = await accountsService.accountsStatement(req.params.id, req.body);
+        const accountsStatement = await accountsService.accountsStatement(req.params.id);
         res.status(200).json(accountsStatement);
     } catch (error) {
         next(error)
     }
 }
-
-
+const accountWithdrawSimulate = async (req, res, next) => {
+    try {
+        const accountWithdrawSimulate = await accountsService.accountWithdrawSimulate(req.params.id, req.body.value);
+        res.status(200).json(accountWithdrawSimulate);
+    } catch (error) {
+        next(error)
+    }
+}
+const accountTransferSimulate = async (req, res, next) => {
+    try {
+        const accountTransferSimulate = await accountsService.accountTransferSimulate(req.body);
+        res.status(200).json(accountTransferSimulate);
+    } catch (error) {
+        next(error)
+    }
+}
 export default {
     createAccount,
     getAllAccounts,
@@ -103,5 +117,7 @@ export default {
     accountDeposit,
     accountWithdraw,
     accountTransfer,
-    accountsStatement
+    accountsStatement,
+    accountWithdrawSimulate,
+    accountTransferSimulate
 }

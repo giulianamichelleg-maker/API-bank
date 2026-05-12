@@ -1,6 +1,19 @@
 
-//port { get } from "mongoose";
-//port Account from "../models/transaction.js";
+import { get } from "mongoose";
+import Transactions from "../models/transaction.js";
+import Account from "../controllers/accountsController.js";
 
-//import { get } from "mongoose";
-//import Account from "../models/transaction.js";
+
+const transactionsFind = async () => {
+
+    const transactions = await Transactions.find().sort({ createdAt: -1 })
+
+    return transactions;
+
+}
+
+
+
+export default {
+    transactionsFind,
+}

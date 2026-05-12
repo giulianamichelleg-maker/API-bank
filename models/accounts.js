@@ -8,8 +8,8 @@ const AccountSchema = new mongoose.Schema({
     },
     accountNumber: {
         type: Number,
-      
-        unique: true,   
+
+        unique: true,
     },
     agency: {
         type: Number,
@@ -25,25 +25,25 @@ const AccountSchema = new mongoose.Schema({
         default: 0
 
     },
-    limit: { 
+    limit: {
         type: Number,
         required: true,
         default: 1000
     },
     active: {
         type: Boolean,
-        
+
         default: true
     },
     blocked: {
         type: Boolean,
-      
+
         default: false
 
     },
-    deposits:{
+    deposits: {
         type: Number,
-        
+
     }
 },
     {
