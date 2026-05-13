@@ -16,7 +16,34 @@ res.status(202).json(findId)
         next(error)
     }
 }
+const transactionType = async(req, res, next)=>{
+    try{
+        const findTransactionType = await transactionService.transactionType(req.params.type);
+        res.status(202).json(findTransactionType)
+    }catch(error){
+        next(error)
+    }
+}
+const transactionMinMax = async(req, res, next)=>{
+    try{
+        const transactionMinMax = await transactionService.transactionMinMax(req.params.min, req.params.max);
+        res.status(202).json(transactionMinMax)
+    } catch(error){
+        next(error)
+    }
+}
+const transactionYear = async(req, res, next)=>{
+    try{
+const transaction = await transactionService.transactionYear(req.params.year)
+res.status(202).json(transactionYear)
+    }catch(error){
+    next(error)
+    }
+}
 export default {
     transactionsFind,
-    transactionForId
+    transactionForId,
+    transactionType,
+    transactionMinMax,
+    transactionYear
 }
