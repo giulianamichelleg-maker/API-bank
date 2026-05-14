@@ -14,7 +14,7 @@ const createAccount = async (data) => {
         error.statusCode = 400;
         throw error;
     }
-    if(!["corrente", "poupança"].includes(typeAccount)){
+    if (!["corrente", "poupança"].includes(typeAccount)) {
         const error = new Error("O tipo de conta deve ser 'corrente' ou 'poupança'");
         error.statusCode = 400;
         throw error;
@@ -24,7 +24,7 @@ const createAccount = async (data) => {
         error.statusCode = 400;
         throw error;
     }
-    if(age < 18){
+    if (age < 18) {
         const error = new Error("O usuário deve ser maior de 18 anos para criar uma conta");
         error.statusCode = 400;
         throw error;
@@ -45,7 +45,7 @@ const getAllAccounts = async (data) => {
     if (accountsBlocked.length > 0) {
         return accountsBlocked;
     }
-    if(data.active){
+    if (data.active) {
         const accountsActive = await Account.find({ active: true });
         return accountsActive;
     }
@@ -77,17 +77,17 @@ const accountDeposit = async (id, data) => {
     if (!account) {
         throw new Error("Conta não encontrada");
     }
-    if(!account.active){
+    if (!account.active) {
         const error = new Error("Conta está inativa");
         error.statusCode = 400;
         throw error;
     }
-    if(account.blocked){
+    if (account.blocked) {
         const error = new Error("Conta está bloqueada");
         error.statusCode = 400;
         throw error;
     }
-    if(value <= 0){ 
+    if (value <= 0) {
         const error = new Error("Valor de depósito deve ser maior que zero");
         error.statusCode = 400;
         throw error;
@@ -126,17 +126,17 @@ const accountWithdraw = async (id, value) => {
         error.statusCode = 404;
         throw error;
     }
-    if(!account.active){
+    if (!account.active) {
         const error = new Error("Conta está inativa");
         error.statusCode = 400;
         throw error;
     }
-    if(account.blocked){
+    if (account.blocked) {
         const error = new Error("Conta está bloqueada");
         error.statusCode = 400;
         throw error;
     }
-    if(value <= 0){ 
+    if (value <= 0) {
         const error = new Error("Valor de saque deve ser maior que zero");
         error.statusCode = 400;
         throw error;
@@ -146,12 +146,12 @@ const accountWithdraw = async (id, value) => {
         error.statusCode = 400;
         throw error;
     }
-    if(account.typeAccount === "corrente" && account.balance + account.limit < value){
+    if (account.typeAccount === "corrente" && account.balance + account.limit < value) {
         const error = new Error("Saldo e limite insuficiênte");
         error.statusCode = 400;
         throw error;
     }
-    if(typeAccount === "poupança" && account.balance < value){
+    if (typeAccount === "poupança" && account.balance < value) {
         const error = new Error("Saldo insuficiênte");
         error.statusCode = 400;
         throw error;
@@ -175,27 +175,27 @@ const accountTransfer = async (data) => {
         error.statusCode = 404;
         throw error;
     }
-    if(!fromAccount.active || !toAccount.active){
+    if (!fromAccount.active || !toAccount.active) {
         const error = new Error("Uma das contas está inativa");
         error.statusCode = 400;
         throw error;
     }
-    if(fromAccount.blocked || toAccount.blocked){
+    if (fromAccount.blocked || toAccount.blocked) {
         const error = new Error("Uma das contas está bloqueada");
         error.statusCode = 400;
         throw error;
     }
-     if(value <= 0){ 
+    if (value <= 0) {
         const error = new Error("Valor de transferência deve ser maior que zero");
         error.statusCode = 400;
         throw error;
     }
-     if(fromAccount.typeAccount === "corrente" && fromAccount.balance + fromAccount.limit < value){
+    if (fromAccount.typeAccount === "corrente" && fromAccount.balance + fromAccount.limit < value) {
         const error = new Error("Saldo e limite insuficiênte");
         error.statusCode = 400;
         throw error;
     }
-    if(fromAccount.typeAccount === "poupança" && fromAccount.balance < value){
+    if (fromAccount.typeAccount === "poupança" && fromAccount.balance < value) {
         const error = new Error("Saldo insuficiênte");
         error.statusCode = 400;
         throw error;
@@ -281,6 +281,6 @@ export default {
     accountsStatement,
     accountWithdrawSimulate,
     accountTransferSimulate,
-    
-    
+
+
 }

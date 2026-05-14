@@ -7,6 +7,8 @@ import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import accountsRoutes from "./routes/accountsRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js"
+import adminRoutes from "./routes/adminRoutes.js"
+
 
 
 dotenv.config();
@@ -25,6 +27,8 @@ app.use("/users", userRoutes);
 app.use("/accounts", accountsRoutes);
 
 app.use("/transactions", transactionRoutes);
+
+app.use("/admin", adminRoutes);
 
 const startServer = async () => {
   try {

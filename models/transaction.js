@@ -9,11 +9,6 @@ const transactionsSchema = new mongoose.Schema({
         required: true,
     },
 
-    targetAccountId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-    },
-
     typeTransaction: {
         type: String,
         required: true,
