@@ -1,6 +1,8 @@
 import { get } from "mongoose";
 
 import User from "../models/user.js";
+import Account from "../models/accounts.js"
+import accounts from "../models/accounts.js";
 
 
 const  adminUserActive = async (active) => {
@@ -21,20 +23,66 @@ const  adminUserInactive = async (active) => {
     }
 return userInactive
 }
-const adminUpdateUser = async (active)=>{
-    const updateActivate = await User.findByIdAndUpdate({active:true})
-    if(!updateActivate){
-          const error = new Error("Não foi possível ativar o usuário");
+const adminUpdateUser = async (id) => {
+
+    const user = await User.findById(id);
+
+    if(!user){
+        const error = new Error("Usuário não encontrado");
         error.statusCode = 404;
         throw error;
     }
-    return updateActivate
+
+      if(user.active === false){
+    user.active = true;
+      }
+
+    await user.save();
+
+    return user;
+}
+const adminUpdateDesactivate = async (id)=>{
+    
+    const user = await User.findById(id);
+    const account = await Account.find({userId: id})
+console.log(account)
+console.log(user)
+    if(!account){
+        const error = new Error("Conta não encontrada");
+        error.statusCode = 404;
+        throw error;
+        
+    }
+
+    if(!user){
+        const error = new Error("Usuário não encontrado");
+        error.statusCode = 404;
+        throw error;
+        
+    }
+       if(account.balance > 0){
+     const error = new Error("Não é possivel desativar um usuário que possui uma conta com saldo positivo ");
+        error.statusCode = 404;
+        throw error;
+   }
+
+   if(user.active === true){
+    user.active = false;
+
+   } else{
+    const error = new Error("NUsuário já desativado ");
+        error.statusCode = 404;
+        throw error;
+   }
+
+    await user.save();
+
+    return user;
+
 }
 export default{
     adminUserActive,
     adminUserInactive,
-    adminUpdateUser
-
-
-
+    adminUpdateUser,
+    adminUpdateDesactivate
 }

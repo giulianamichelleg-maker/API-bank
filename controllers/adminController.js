@@ -28,6 +28,14 @@ const adminUpdateUser = async (req, res, next) => {
         next(error)
     }
 }
+const adminUpdateDesactivate = async (req, res, next)=>{
+    try{
+const updateDesactivate  = await adminService.adminUpdateDesactivate(req.params.id)
+res.status(202).json(updateDesactivate)
+    }catch(error){
+        next(error)
+    }
+}
 
 
 
@@ -35,6 +43,8 @@ export default {
     adminUserActive,
     adminUserInactive,
     adminUpdateUser,
+    adminUpdateDesactivate
+
 
 }
 
