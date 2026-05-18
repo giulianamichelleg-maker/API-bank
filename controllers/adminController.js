@@ -84,6 +84,14 @@ const accountFee = async(req, res, next)=>{
         next(error)
     }
 }
+const accountRefund = async(req, res, next)=>{
+    try{
+        const accountRefund = await adminService.accountRefund(req.params.id, req.body);
+        res.status(202).json(accountRefund)
+    }catch(error){
+        next(error)
+    }
+}
 export default {
     adminUserActive,
     adminUserInactive,
@@ -94,7 +102,8 @@ export default {
     accountsUpdateBlock,
     accountsUpdateUnblock,
     accountClose,
-    accountFee
+    accountFee,
+    accountRefund
 
 
 }

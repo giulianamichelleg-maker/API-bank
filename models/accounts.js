@@ -28,7 +28,7 @@ const AccountSchema = new mongoose.Schema({
     limit: {
         type: Number,
         required: true,
-        default: 1000
+        default: 0
     },
     active: {
         type: Boolean,
