@@ -36,14 +36,65 @@ res.status(202).json(updateDesactivate)
         next(error)
     }
 }
-
-
-
+const getAccountsActive = async(req, res, next)=>{
+    try{
+        const accountActive = await adminService.getAccountsActive(req.params.accounts)
+        res.status(202).json(accountActive)
+    }catch(error){
+        next(error)
+    }
+}
+const getAccountsInactive = async(req,res,next)=>{
+    try{
+        const accountInactive = await adminService.getAccountsInactive(req.params.accounts)
+        res.status(202).json(accountInactive)
+    }catch (error){
+        next(error)
+    }
+}
+const accountsUpdateBlock = async(req, res, next)=>{
+    try{
+        const accountBlocked = await adminService.accountsUpdateBlock(req.params.id)
+        res.status(202).json(accountBlocked);
+    }catch(error){
+        next(error)
+    }
+}
+const accountsUpdateUnblock = async(req, res, next)=>{
+    try{
+        const accountUnblock = await adminService.accountsUpdateUnblock(req.params.id)
+        res.status(202).json(accountUnblock);
+    }catch(error){
+        next(error)
+    }
+}
+const accountClose = async (req, res, next)=>{
+    try{
+        const accountClose = await adminService.accountClose(req.params.id);
+        res.status(202).json(accountClose);
+    }catch(error){
+        next(error);
+    }
+}
+const accountFee = async(req, res, next)=>{
+    try{
+        const accountFee = await adminService.accountFee(req.params.id, req.body);
+        res.status(202).json(accountFee)
+    }catch(error){
+        next(error)
+    }
+}
 export default {
     adminUserActive,
     adminUserInactive,
     adminUpdateUser,
-    adminUpdateDesactivate
+    adminUpdateDesactivate,
+    getAccountsActive,
+    getAccountsInactive,
+    accountsUpdateBlock,
+    accountsUpdateUnblock,
+    accountClose,
+    accountFee
 
 
 }

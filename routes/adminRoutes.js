@@ -6,6 +6,12 @@ router.get("/users/active", adminController.adminUserActive)
 router.get("/users/inactive", adminController.adminUserInactive);
 router.patch("/users/:id/activate", adminController.adminUpdateUser)
 router.patch("/users/:id/desactivate", adminController.adminUpdateDesactivate);
+router.get("/accounts/active", adminController.getAccountsActive);
+router.get("/accounts/inactive", adminController.getAccountsInactive);
+router.patch("/accounts/:id/block", adminController.accountsUpdateBlock);
+router.patch("/accounts/:id/Unblock", adminController.accountsUpdateUnblock);
+router.patch("/accounts/:id/close", adminController.accountClose);
+router.post("/accounts/:id/monthly-fee", adminController.accountFee);
 
 
 export default router;
