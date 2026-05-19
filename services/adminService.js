@@ -215,71 +215,108 @@ const accountFee = async (AccountId, data) => {
 
 }
 const accountRefund = async (transactionId) => {
-    const transaction = await Transaction.findById(transactionId)
+  const transaction = await Transaction.findById(transactionId);
 
-    if(!transaction){
-          const error = new Error("Transação não encontrada");
-        error.statusCode = 400;
-        throw error;
-    }
-    const account = await Account.findById(transaction.accountId)
+  if (!transaction) {
+    const error = new Error("Transação não encontrada");
+    error.statusCode = 404;
+    throw error;
+  }
 
- 
-    const currentBalance= account.balance - value
+  if (transaction.status === "cancelled") {
+    const error = new Error("Não é possível estornar uma transação cancelada");
+    error.statusCode = 400;
+    throw error;
+  }
 
-    if (account.status === "cancelled") {
-        const error = new Error("Não é possível reembolsar uma transação cancelada");
-        error.statusCode = 400;
-        throw error;
-    }
+  if (transaction.typeTransaction === "reversal") {
+    const error = new Error("Não é possível estornar um estorno");
+    error.statusCode = 400;
+    throw error;
+  }
 
-    if (!account) {
-        const error = new Error("Conta não encontrada");
-        error.statusCode = 404;
-        throw error;
-    }
-   const previousBalance = account.balance;
-    console.log(account.balance)
+  const account = await Account.findById(transaction.accountId);
 
-    if (account.typeTransaction === "deposit") {
-        account.balance = account.balance + transaction.value
-                console.log(account.balance)
-        await account.save();
-    }
+  if (!account) {
+    const error = new Error("Conta não encontrada");
+    error.statusCode = 404;
+    throw error;
+  }
+const accountRefund = async (transactionId) => {
+  const transaction = await Transaction.findById(transactionId);
 
-        console.log(account.balance)
+  if (!transaction) {
+    const error = new Error("Transação não encontrada");
+    error.statusCode = 404;
+    throw error;
+  }
 
+  if (transaction.status === "cancelled") {
+    const error = new Error("Não é possível estornar uma transação cancelada");
+    error.statusCode = 400;
+    throw error;
+  }
 
-    if (account.typeTransaction === "sake") {
-        account.balance = account.balance + transaction.value;
-        await account.save();
-    }
-    if (account.Transaction === "rate") {
-        account.balance = account.balance + transaction.value;
-        await account.save();
-    }
-    // if (account.typeTransaction !== "deposit" || account.typeTransaction !== "sake" || account.typeTransaction || "rate") {
-    //     const error = new Error("A transação precisa ser do tipo depósito, saque ou taxa para ser reembolsada");
-    //     error.statusCode = 400;
-    //     throw error;
-    // }
+  if (transaction.typeTransaction === "reversal") {
+    const error = new Error("Não é possível estornar um estorno");
+    error.statusCode = 400;
+    throw error;
+  }
 
+  const account = await Account.findById(transaction.accountId);
 
+  if (!account) {
+    const error = new Error("Conta não encontrada");
+    error.statusCode = 404;
+    throw error;
+  }
 
-    await Transaction.create({
-        accountId: transaction.accountId,
-        typeTransaction: "reversal",
-        value: transaction.value,
-        previousbalance: previousBalance,
-        currentBalance: account.balance,
-        description: "estorno",
-        status: "completed"
-    })
+  const allowedTypes = ["deposit", "sake", "rate"];
 
+  if (!allowedTypes.includes(transaction.typeTransaction)) {
+    const error = new Error(
+      "A transação precisa ser do tipo deposit, sake ou rate para ser estornada"
+    );
+    error.statusCode = 400;
+    throw error;
+  }
 
-    return  account
+  const previousBalance = account.balance;
 
+  if (transaction.typeTransaction === "deposit") {
+    account.balance = account.balance - transaction.value;
+  }
 
+  if (transaction.typeTransaction === "sake") {
+    account.balance = account.balance + transaction.value;
+  }
+
+  if (transaction.typeTransaction === "rate") {
+    account.balance = account.balance + transaction.value;
+  }
+
+  await account.save();
+
+  transaction.status = "cancelled";
+  await transaction.save();
+
+  const refundTransaction = await Transaction.create({
+    accountId: transaction.accountId,
+    typeTransaction: "reversal",
+    value: transaction.value,
+    previousbalance: previousBalance,
+    currentBalance: account.balance,
+    description: "Estorno realizado",
+    status: "completed",
+  });
+
+  return {
+    message: "Estorno realizado com sucesso",
+    account,
+    originalTransaction: transaction,
+    refundTransaction,
+  };
+};
 }
 const reportsGeneral = async ()=>{
     const totalUsers = await User.countDocuments();

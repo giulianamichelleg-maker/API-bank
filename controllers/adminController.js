@@ -84,14 +84,15 @@ const accountFee = async(req, res, next)=>{
         next(error)
     }
 }
-const accountRefund = async(req, res, next)=>{
-    try{
-        const accountRefund = await adminService.accountRefund(req.params.id);
-        res.status(202).json(accountRefund)
-    }catch(error){
-        next(error)
-    }
-}
+const accountRefund = async (req, res, next) => {
+  try {
+    const result = await adminService.accountRefund(req.params.id);
+
+    res.status(202).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
 const reportsGeneral = async (req,res, next)=>{
     try{
         const reportsGeneral = await adminService.reportsGeneral();
