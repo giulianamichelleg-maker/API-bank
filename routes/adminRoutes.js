@@ -13,6 +13,8 @@ router.patch("/accounts/:id/unblock", adminController.accountsUpdateUnblock);
 router.patch("/accounts/:id/close", adminController.accountClose);
 router.post("/accounts/:id/monthly-fee", adminController.accountFee);
 router.post("/transactions/:id/refund", adminController.accountRefund);
+router.get("/reports/general", adminController.reportsGeneral);
+router.get("/reports/financial", adminController.reportsFinancial);
 
 
 export default router;

@@ -216,9 +216,15 @@ const accountFee = async (AccountId, data) => {
 }
 const accountRefund = async (transactionId) => {
     const transaction = await Transaction.findById(transactionId)
+
+    if(!transaction){
+          const error = new Error("Transação não encontrada");
+        error.statusCode = 400;
+        throw error;
+    }
     const account = await Account.findById(transaction.accountId)
 
-    const previousBalance = account.balance;
+ 
     const currentBalance= account.balance - value
 
     if (account.status === "cancelled") {
@@ -232,11 +238,11 @@ const accountRefund = async (transactionId) => {
         error.statusCode = 404;
         throw error;
     }
-
+   const previousBalance = account.balance;
     console.log(account.balance)
 
     if (account.typeTransaction === "deposit") {
-        account.balance = account.balance - value;
+        account.balance = account.balance + transaction.value
                 console.log(account.balance)
         await account.save();
     }
@@ -245,18 +251,19 @@ const accountRefund = async (transactionId) => {
 
 
     if (account.typeTransaction === "sake") {
-        account.balance = account.balance + value;
+        account.balance = account.balance + transaction.value;
         await account.save();
     }
     if (account.Transaction === "rate") {
-        account.balance = account.balance + value;
+        account.balance = account.balance + transaction.value;
         await account.save();
     }
-    // if (account.typeTransaction !== "deposit" && account.typeTransaction !== "sake" && account.typeTransaction !== "rate") {
+    // if (account.typeTransaction !== "deposit" || account.typeTransaction !== "sake" || account.typeTransaction || "rate") {
     //     const error = new Error("A transação precisa ser do tipo depósito, saque ou taxa para ser reembolsada");
     //     error.statusCode = 400;
     //     throw error;
     // }
+
 
 
     await Transaction.create({
@@ -270,13 +277,95 @@ const accountRefund = async (transactionId) => {
     })
 
 
-    const accountUpdate = await Account.findByIdAndUpdate(transaction.accountId, { balance: account.currentBalance })
-
-    return { account, accountUpdate }
+    return  account
 
 
 }
+const reportsGeneral = async ()=>{
+    const totalUsers = await User.countDocuments();
 
+    const totalUsersActive = await User.countDocuments({
+
+      active: true
+    });
+    const totalUsersInactive = await User.countDocuments({
+        active: false
+    })
+
+    const totalAccounts = await Account.countDocuments()
+      
+
+        const totalAccountsActive = await Account.countDocuments({
+            active: true
+        })
+    const totalAccountsBlocked = await Account.countDocuments({
+
+        status: "blocked"
+    })
+
+    const totalTransactions = await Transaction.countDocuments()
+
+    const accounts = await Account.find()
+
+
+let totalBalance = 0;
+
+
+for (let i = 0; i < accounts.length; i++) {
+    totalBalance += accounts[i].balance;
+}
+
+return {
+    totalUsers,
+    totalUsersActive,
+    totalUsersInactive,
+    totalAccounts,
+    totalAccountsActive,
+    totalAccountsBlocked,
+    totalTransactions,
+    accounts,
+    totalBalance
+}
+
+}
+const reportsFinancial = async ()=>{
+    const totalFinancial = await Transaction.find({
+        status:"completed"
+    })
+    let totalDeposited = 0;
+    let totalWithdrawn = 0;
+    let totalTransferred = 0;
+    let totalFees = 0;
+    let totalRefunded= 0;
+
+    for(let i = 0; i < totalFinancial.length; i++){
+        const transaction = transaction[i]
+
+
+        if(transaction.typeTransaction === "deposit"){
+            totalDeposited = totalDeposited + transaction.value
+        }
+        if(transaction.typeTransaction === "sake"){
+            totalWithdrawn = totalWithdrawn + transaction.value
+        }
+        if(transaction.typeTransaction === "transfer"){
+            totalTransferred= totalTransferred + transaction.value
+        }
+        if(transaction.typeTransaction === "rate"){
+            totalFees = totalFees + transaction.value
+        }
+        if(transaction.typeTransaction === "reversal"){
+            totalRefunded = totalRefunded + transaction.value
+        }
+    }
+    return{
+        totalDeposited,
+     totalWithdrawn,
+     totalTransferred ,
+     totalFees ,
+     totalRefunded
+    }
+   }
 
 export default {
     adminUserActive,
@@ -289,7 +378,9 @@ export default {
     accountsUpdateUnblock,
     accountClose,
     accountFee,
-    accountRefund
+    accountRefund,
+    reportsGeneral,
+    reportsFinancial
 
 
 }

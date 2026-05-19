@@ -86,8 +86,24 @@ const accountFee = async(req, res, next)=>{
 }
 const accountRefund = async(req, res, next)=>{
     try{
-        const accountRefund = await adminService.accountRefund(req.params.id, req.body);
+        const accountRefund = await adminService.accountRefund(req.params.id);
         res.status(202).json(accountRefund)
+    }catch(error){
+        next(error)
+    }
+}
+const reportsGeneral = async (req,res, next)=>{
+    try{
+        const reportsGeneral = await adminService.reportsGeneral();
+        res.status(202).json(reportsGeneral)
+    }catch(error){
+        next(error)
+    }
+}
+const reportsFinancial = async (req,res,next)=>{
+    try{
+        const reportsFinancial = await adminService.reportsFinancial();
+        res.status(202).json(reportsFinancial)
     }catch(error){
         next(error)
     }
@@ -103,7 +119,9 @@ export default {
     accountsUpdateUnblock,
     accountClose,
     accountFee,
-    accountRefund
+    accountRefund,
+    reportsGeneral,
+    reportsFinancial
 
 
 }
