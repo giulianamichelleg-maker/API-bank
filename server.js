@@ -22,6 +22,8 @@ app.get("/", (req, res) => {
   res.json({ message: "API de BANCO funcionando" });
 });
 
+app.use("/auth", authRoutes);
+
 app.use("/users", userRoutes);
 
 app.use("/accounts", accountsRoutes);

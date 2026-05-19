@@ -16,7 +16,7 @@ router.post("/transactions/:id/refund", adminController.accountRefund);
 router.get("/reports/general", adminController.reportsGeneral);
 router.get("/reports/financial", adminController.reportsFinancial);
 router.get("/accounts/negative-balance", adminController.negativeBalanceAccounts);
-router.get("/accounts/top-balance/:limit",adminController.topBalances);
+router.get("/accounts/top-balance/:limit", adminController.topBalances);
 
 
 

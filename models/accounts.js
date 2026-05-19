@@ -45,7 +45,7 @@ const AccountSchema = new mongoose.Schema({
         type: Number,
 
     }
-    
+
 },
     {
         collection: "accounts",

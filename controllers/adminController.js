@@ -28,84 +28,84 @@ const adminUpdateUser = async (req, res, next) => {
         next(error)
     }
 }
-const adminUpdateDesactivate = async (req, res, next)=>{
-    try{
-const updateDesactivate  = await adminService.adminUpdateDesactivate(req.params.id)
-res.status(202).json(updateDesactivate)
-    }catch(error){
+const adminUpdateDesactivate = async (req, res, next) => {
+    try {
+        const updateDesactivate = await adminService.adminUpdateDesactivate(req.params.id)
+        res.status(202).json(updateDesactivate)
+    } catch (error) {
         next(error)
     }
 }
-const getAccountsActive = async(req, res, next)=>{
-    try{
+const getAccountsActive = async (req, res, next) => {
+    try {
         const accountActive = await adminService.getAccountsActive(req.params.accounts)
         res.status(202).json(accountActive)
-    }catch(error){
+    } catch (error) {
         next(error)
     }
 }
-const getAccountsInactive = async(req,res,next)=>{
-    try{
+const getAccountsInactive = async (req, res, next) => {
+    try {
         const accountInactive = await adminService.getAccountsInactive(req.params.accounts)
         res.status(202).json(accountInactive)
-    }catch (error){
+    } catch (error) {
         next(error)
     }
 }
-const accountsUpdateBlock = async(req, res, next)=>{
-    try{
+const accountsUpdateBlock = async (req, res, next) => {
+    try {
         const accountBlocked = await adminService.accountsUpdateBlock(req.params.id)
         res.status(202).json(accountBlocked);
-    }catch(error){
+    } catch (error) {
         next(error)
     }
 }
-const accountsUpdateUnblock = async(req, res, next)=>{
-    try{
+const accountsUpdateUnblock = async (req, res, next) => {
+    try {
         const accountUnblock = await adminService.accountsUpdateUnblock(req.params.id)
         res.status(202).json(accountUnblock);
-    }catch(error){
+    } catch (error) {
         next(error)
     }
 }
-const accountClose = async (req, res, next)=>{
-    try{
+const accountClose = async (req, res, next) => {
+    try {
         const accountClose = await adminService.accountClose(req.params.id);
         res.status(202).json(accountClose);
-    }catch(error){
+    } catch (error) {
         next(error);
     }
 }
-const accountFee = async(req, res, next)=>{
-    try{
+const accountFee = async (req, res, next) => {
+    try {
         const accountFee = await adminService.accountFee(req.params.id, req.body);
         res.status(202).json(accountFee)
-    }catch(error){
+    } catch (error) {
         next(error)
     }
 }
 const accountRefund = async (req, res, next) => {
-  try {
-    const result = await adminService.accountRefund(req.params.id);
+    try {
+        const result = await adminService.accountRefund(req.params.id);
 
-    res.status(202).json(result);
-  } catch (error) {
-    next(error);
-  }
+        res.status(202).json(result);
+    } catch (error) {
+        next(error);
+    }
 };
-const reportsGeneral = async (req,res, next)=>{
-    try{
+const reportsGeneral = async (req, res, next) => {
+    try {
         const reportsGeneral = await adminService.reportsGeneral();
         res.status(202).json(reportsGeneral)
-    }catch(error){
+    } catch (error) {
         next(error)
     }
 }
-const reportsFinancial = async (req,res,next)=>{
-    try{
+const reportsFinancial = async (req, res, next) => {
+    try {
         const reportsFinancial = await adminService.reportsFinancial();
         res.status(202).json(reportsFinancial)
-    }catch(error){
+    } catch (error) {
         next(error)
     }
 }
@@ -123,7 +123,7 @@ const negativeBalanceAccounts = async (req, res, next) => {
 const topBalances = async (req, res, next) => {
     try {
         const accounts = await adminService.topBalances(req.params.limit);
- res.status(200).json(accounts);
+        res.status(200).json(accounts);
     } catch (error) {
         next(error);
     }
@@ -142,8 +142,8 @@ export default {
     accountRefund,
     reportsGeneral,
     reportsFinancial,
-negativeBalanceAccounts,
-topBalances
+    negativeBalanceAccounts,
+    topBalances
 
 }
 

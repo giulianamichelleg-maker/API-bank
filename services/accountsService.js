@@ -74,57 +74,57 @@ const accountNumber = async (accountNumber) => {
 }
 
 const accountDeposit = async (id, data) => {
-  const { value, description } = data;
+    const { value, description } = data;
 
-  const depositValue = Number(value);
+    const depositValue = Number(value);
 
-  if (!depositValue || depositValue <= 0) {
-    const error = new Error("Valor de depósito deve ser maior que zero");
-    error.statusCode = 400;
-    throw error;
-  }
+    if (!depositValue || depositValue <= 0) {
+        const error = new Error("Valor de depósito deve ser maior que zero");
+        error.statusCode = 400;
+        throw error;
+    }
 
-  const account = await Account.findById(id);
+    const account = await Account.findById(id);
 
-  if (!account) {
-    const error = new Error("Conta não encontrada");
-    error.statusCode = 404;
-    throw error;
-  }
+    if (!account) {
+        const error = new Error("Conta não encontrada");
+        error.statusCode = 404;
+        throw error;
+    }
 
-  if (!account.active) {
-    const error = new Error("Conta está inativa");
-    error.statusCode = 400;
-    throw error;
-  }
+    if (!account.active) {
+        const error = new Error("Conta está inativa");
+        error.statusCode = 400;
+        throw error;
+    }
 
-  if (account.blocked) {
-    const error = new Error("Conta está bloqueada");
-    error.statusCode = 400;
-    throw error;
-  }
+    if (account.blocked) {
+        const error = new Error("Conta está bloqueada");
+        error.statusCode = 400;
+        throw error;
+    }
 
-  const previousBalance = account.balance;
+    const previousBalance = account.balance;
 
-  account.balance = account.balance + depositValue;
+    account.balance = account.balance + depositValue;
 
-  await account.save();
+    await account.save();
 
-  const transaction = await Transaction.create({
-    accountId: account._id,
-    typeTransaction: "deposit",
-    value: depositValue,
-    previousbalance: previousBalance,
-    currentBalance: account.balance,
-    description: description || "Depósito realizado",
-    status: "completed"
-  });
+    const transaction = await Transaction.create({
+        accountId: account._id,
+        typeTransaction: "deposit",
+        value: depositValue,
+        previousbalance: previousBalance,
+        currentBalance: account.balance,
+        description: description || "Depósito realizado",
+        status: "completed"
+    });
 
-  return {
-    message: "Depósito realizado com sucesso",
-    account,
-    transaction
-  };
+    return {
+        message: "Depósito realizado com sucesso",
+        account,
+        transaction
+    };
 };
 
 const accountWithdraw = async (id, value) => {
