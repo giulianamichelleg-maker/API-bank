@@ -219,6 +219,7 @@ const accountRefund = async (transactionId) => {
     const account = await Account.findById(transaction.accountId)
 
     const previousBalance = account.balance;
+    const currentBalance= account.balance - value
 
     if (account.status === "cancelled") {
         const error = new Error("Não é possível reembolsar uma transação cancelada");
