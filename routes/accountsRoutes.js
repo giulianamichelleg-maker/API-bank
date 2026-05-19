@@ -16,7 +16,6 @@ router.post("/:id/withdraw/simulate", accountsController.accountWithdrawSimulate
 router.post("/transfer/simulate", accountsController.accountTransferSimulate);
 
 
-
 export default router;
 
 

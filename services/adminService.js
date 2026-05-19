@@ -214,34 +214,7 @@ const accountFee = async (AccountId, data) => {
 
 
 }
-const accountRefund = async (transactionId) => {
-  const transaction = await Transaction.findById(transactionId);
-
-  if (!transaction) {
-    const error = new Error("Transação não encontrada");
-    error.statusCode = 404;
-    throw error;
-  }
-
-  if (transaction.status === "cancelled") {
-    const error = new Error("Não é possível estornar uma transação cancelada");
-    error.statusCode = 400;
-    throw error;
-  }
-
-  if (transaction.typeTransaction === "reversal") {
-    const error = new Error("Não é possível estornar um estorno");
-    error.statusCode = 400;
-    throw error;
-  }
-
-  const account = await Account.findById(transaction.accountId);
-
-  if (!account) {
-    const error = new Error("Conta não encontrada");
-    error.statusCode = 404;
-    throw error;
-  }
+  
 const accountRefund = async (transactionId) => {
   const transaction = await Transaction.findById(transactionId);
 
@@ -298,6 +271,7 @@ const accountRefund = async (transactionId) => {
   await account.save();
 
   transaction.status = "cancelled";
+
   await transaction.save();
 
   const refundTransaction = await Transaction.create({
@@ -317,7 +291,7 @@ const accountRefund = async (transactionId) => {
     refundTransaction,
   };
 };
-}
+
 const reportsGeneral = async ()=>{
     const totalUsers = await User.countDocuments();
 
@@ -365,45 +339,77 @@ return {
 }
 
 }
-const reportsFinancial = async ()=>{
-    const totalFinancial = await Transaction.find({
-        status:"completed"
-    })
+const reportsFinancial = async () => {
+
+    const transactions = await Transaction.find({
+        status: "completed"
+    });
+
     let totalDeposited = 0;
     let totalWithdrawn = 0;
     let totalTransferred = 0;
     let totalFees = 0;
-    let totalRefunded= 0;
-
-    for(let i = 0; i < totalFinancial.length; i++){
-        const transaction = transaction[i]
+    let totalRefunded = 0;
 
 
-        if(transaction.typeTransaction === "deposit"){
-            totalDeposited = totalDeposited + transaction.value
+    for (let i = 0; i < transactions.length; i++) {
+
+        const transaction = transactions[i];
+
+        if (transaction.typeTransaction === "deposit") {
+            totalDeposited += transaction.value;
         }
-        if(transaction.typeTransaction === "sake"){
-            totalWithdrawn = totalWithdrawn + transaction.value
+        if (transaction.typeTransaction === "sake") {
+            
+            totalWithdrawn += transaction.value;
         }
-        if(transaction.typeTransaction === "transfer"){
-            totalTransferred= totalTransferred + transaction.value
+
+        if (transaction.typeTransaction === "transfer") {
+            totalTransferred += transaction.value;
         }
-        if(transaction.typeTransaction === "rate"){
-            totalFees = totalFees + transaction.value
+        if (transaction.typeTransaction === "rate") {
+            totalFees += transaction.value;
         }
-        if(transaction.typeTransaction === "reversal"){
-            totalRefunded = totalRefunded + transaction.value
+        if (transaction.typeTransaction === "reversal") {
+            totalRefunded += transaction.value;
         }
     }
-    return{
+    return {
         totalDeposited,
-     totalWithdrawn,
-     totalTransferred ,
-     totalFees ,
-     totalRefunded
-    }
-   }
+        totalWithdrawn,
+        totalTransferred,
+        totalFees,
+        totalRefunded
+    };
+}
+const negativeBalanceAccounts = async () => {
+    const accounts = await Account.find({
+        balance: { $lt: 0 }
+    });
 
+    if (accounts.length === 0) {
+        const error = new Error("Nenhuma conta com saldo negativo encontrada");
+        error.statusCode = 404;
+        throw error;
+    }
+
+    return accounts;
+}
+const topBalances = async (limit) => {
+
+    const limitNumber = Number(limit);
+
+    if (!limitNumber || limitNumber <= 0) {
+        const error = new Error("Limite inválido");
+        error.statusCode = 400;
+        throw error;
+    }
+    const accounts = await Account.find()
+        .sort({ balance: -1 })
+        .limit(limitNumber);
+
+    return accounts;
+}
 export default {
     adminUserActive,
     adminUserInactive,
@@ -417,7 +423,9 @@ export default {
     accountFee,
     accountRefund,
     reportsGeneral,
-    reportsFinancial
+    reportsFinancial,
+    negativeBalanceAccounts,
+    topBalances
 
 
 }

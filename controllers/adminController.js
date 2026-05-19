@@ -109,6 +109,25 @@ const reportsFinancial = async (req,res,next)=>{
         next(error)
     }
 }
+const negativeBalanceAccounts = async (req, res, next) => {
+    try {
+
+        const accounts = await adminService.negativeBalanceAccounts();
+
+        res.status(200).json(accounts);
+
+    } catch (error) {
+        next(error);
+    }
+}
+const topBalances = async (req, res, next) => {
+    try {
+        const accounts = await adminService.topBalances(req.params.limit);
+ res.status(200).json(accounts);
+    } catch (error) {
+        next(error);
+    }
+}
 export default {
     adminUserActive,
     adminUserInactive,
@@ -122,8 +141,9 @@ export default {
     accountFee,
     accountRefund,
     reportsGeneral,
-    reportsFinancial
-
+    reportsFinancial,
+negativeBalanceAccounts,
+topBalances
 
 }
 
