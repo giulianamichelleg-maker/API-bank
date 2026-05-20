@@ -99,6 +99,16 @@ const countUsers = async (req, res, next) => {
     }
 
 }
+const getMe = async (req, res, next)=>{
+    try{
+        res.status(200).json({
+            message: "Usuário logado encontrado",
+            data: req.user
+        })
+    }catch(error){
+        next(error)
+    }
+}
 
 export default {
     createUser,
@@ -108,7 +118,8 @@ export default {
     deleteUser,
     findByCpf,
     findByEmail,
-    countUsers
+    countUsers,
+    getMe
 };
 
 

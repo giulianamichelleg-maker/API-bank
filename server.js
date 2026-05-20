@@ -8,6 +8,7 @@ import userRoutes from "./routes/userRoutes.js";
 import accountsRoutes from "./routes/accountsRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js"
 import adminRoutes from "./routes/adminRoutes.js"
+import authRoutes from "./routes/authRoutes.js";
 
 
 
@@ -32,12 +33,14 @@ app.use("/transactions", transactionRoutes);
 
 app.use("/admin", adminRoutes);
 
+
+
 const startServer = async () => {
   try {
     await connectDB();
 
     app.listen(PORT, () => {
-      console.log(`Servidor rodando na porta ${PORT}`);
+      console.log(` Servidor rodando na porta ${PORT} `);
     });
   } catch (error) {
     console.log("Erro ao iniciar o servidor:", error.message);
