@@ -64,7 +64,30 @@ const findByEmail = async (email) => {
 const countUsers = async () => {
     return User.countDocuments();
 };
+const updateMe = async (id, data) => {
+    delete data.role;
+    delete data.active;
+    delete data.password;
 
+    if (data.email) {
+        const emailExists = await User.findOne({
+            email: data.email,
+            _id: { $ne: id }
+        })
+        if (emailExists) {
+            const error = new Error("O email fornecido já está em uso por outro usuário.");
+            error.statusCode = 400;
+            throw error;
+        }
+    }
+    const user = await User.findByIdAndUpdate(id, data, {
+        new: true,
+        runValidators: true
+    })
+    if (!user) {
+        throw new Error("Usuário não encontrado")
+    }
+}
 
 export default {
     createUser,
@@ -74,7 +97,8 @@ export default {
     deleteUser,
     findByCpf,
     findByEmail,
-    countUsers
+    countUsers,
+    updateMe
 };
 
 
