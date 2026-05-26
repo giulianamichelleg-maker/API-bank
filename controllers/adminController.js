@@ -6,7 +6,7 @@ import userService from "../services/userService.js"
 
 const adminUserActive = async (req, res, next) => {
     try {
-        const userActive = await adminService.adminUserActive(req.params.user)
+        const userActive = await adminService.adminUserActive(req.user)
         res.status(202).json(userActive)
     } catch (error) {
         next(error)
@@ -14,7 +14,7 @@ const adminUserActive = async (req, res, next) => {
 }
 const adminUserInactive = async (req, res, next) => {
     try {
-        const userInactive = await adminService.adminUserInactive(req.params.user)
+        const userInactive = await adminService.adminUserInactive(req.user)
         res.status(202).json(userInactive)
     } catch (error) {
         next(error)
@@ -22,7 +22,7 @@ const adminUserInactive = async (req, res, next) => {
 }
 const adminUpdateUser = async (req, res, next) => {
     try {
-        const updateActivate = await adminService.adminUpdateUser(req.params.id, req.params.user)
+        const updateActivate = await adminService.adminUpdateUser(req.user._id, req.body)
         res.status(202).json(updateActivate)
     } catch (error) {
         next(error)
@@ -30,7 +30,7 @@ const adminUpdateUser = async (req, res, next) => {
 }
 const adminUpdateDesactivate = async (req, res, next) => {
     try {
-        const updateDesactivate = await adminService.adminUpdateDesactivate(req.params.id)
+        const updateDesactivate = await adminService.adminUpdateDesactivate(req.user._id)
         res.status(202).json(updateDesactivate)
     } catch (error) {
         next(error)
@@ -54,7 +54,7 @@ const getAccountsInactive = async (req, res, next) => {
 }
 const accountsUpdateBlock = async (req, res, next) => {
     try {
-        const accountBlocked = await adminService.accountsUpdateBlock(req.params.id)
+        const accountBlocked = await adminService.accountsUpdateBlock(req.user._id)
         res.status(202).json(accountBlocked);
     } catch (error) {
         next(error)
@@ -62,7 +62,7 @@ const accountsUpdateBlock = async (req, res, next) => {
 }
 const accountsUpdateUnblock = async (req, res, next) => {
     try {
-        const accountUnblock = await adminService.accountsUpdateUnblock(req.params.id)
+        const accountUnblock = await adminService.accountsUpdateUnblock(req.user._id)
         res.status(202).json(accountUnblock);
     } catch (error) {
         next(error)
@@ -70,7 +70,7 @@ const accountsUpdateUnblock = async (req, res, next) => {
 }
 const accountClose = async (req, res, next) => {
     try {
-        const accountClose = await adminService.accountClose(req.params.id);
+        const accountClose = await adminService.accountClose(req.user._id);
         res.status(202).json(accountClose);
     } catch (error) {
         next(error);
@@ -78,7 +78,7 @@ const accountClose = async (req, res, next) => {
 }
 const accountFee = async (req, res, next) => {
     try {
-        const accountFee = await adminService.accountFee(req.params.id, req.body);
+        const accountFee = await adminService.accountFee(req.user._id, req.body);
         res.status(202).json(accountFee)
     } catch (error) {
         next(error)
@@ -86,7 +86,7 @@ const accountFee = async (req, res, next) => {
 }
 const accountRefund = async (req, res, next) => {
     try {
-        const result = await adminService.accountRefund(req.params.id);
+        const result = await adminService.accountRefund(req.user._id);
 
         res.status(202).json(result);
     } catch (error) {

@@ -276,6 +276,7 @@ const accountTransferSimulate = async (data) => {
     }
 }
 
+
 export default {
     createAccount,
     getAllAccounts,

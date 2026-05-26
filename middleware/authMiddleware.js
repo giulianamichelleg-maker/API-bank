@@ -12,13 +12,13 @@ const authMiddleware = async (req, res, next) => {
         const parts = authorization.split(" ");
 
         
-        if (parts.length !== 2) {
+        if (parts.length !== 2) { 
             return res.status(401).json({ error: "Token mal formatado" });
         }
 
         const [scheme, token] = parts;
 
-        if (scheme !== "Bearer") {
+        if (scheme !== "Bearer") {                           
             return res.status(401).json({ error: "Formato do token inválido" });
         }
 
@@ -27,12 +27,12 @@ const authMiddleware = async (req, res, next) => {
         const user = await User.findById(decoded.id).select("-password");
 
         if (!user) {
-            return res.status(401).json({ error: "Usuário não encontrado" });
-        }
-
-        if (!user.active) {
-            return res.status(403).json({ error: "Usuário inativo" });
-        }
+            return res.status(401).json({ error: "Usuário não encontrado" });                                                      
+        }                                                      
+                 
+        if (!user.active) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+            return res.status(403).json({ error: "Usuário inativo" });                        
+        }     
 
         req.user = user;
         next();

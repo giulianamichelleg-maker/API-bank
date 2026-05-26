@@ -11,7 +11,7 @@ const transactionsFind = async (req, res, next) => {
 }
 const transactionForId = async (req, res, next) => {
     try {
-        const findId = await transactionService.transactionForId(req.params.id);
+        const findId = await transactionService.transactionForId(req.user._id)
         res.status(202).json(findId)
     } catch (error) {
         next(error)

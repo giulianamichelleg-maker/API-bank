@@ -18,7 +18,7 @@ const getAllAccounts = async (req, res, next) => {
 }
 const getAccountId = async (req, res, next) => {
     try {
-        const account = await accountsService.getAccountId(req.params.id);
+        const account = await accountsService.getAccountId(req.user._id);
         res.status(200).json(account);
     } catch (error) {
         next(error)
@@ -26,7 +26,7 @@ const getAccountId = async (req, res, next) => {
 }
 const accountUpdate = async (req, res, next) => {
     try {
-        const newAccount = await accountsService.accountUpdate(req.params.id, req.body);
+        const newAccount = await accountsService.accountUpdate(req.user._id, req.body);
         res.status(200).json(newAccount);
     } catch (error) {
         next(error)
@@ -34,7 +34,7 @@ const accountUpdate = async (req, res, next) => {
 }
 const accountNumber = async (req, res, next) => {
     try {
-        const account = await accountsService.accountNumber(req.params.accountNumber);
+        const account = await accountsService.accountNumber(req.user.accountNumber);
         if (!account) {
             return res.status(404).json({ message: "Conta não encontrada" })
         }
@@ -47,7 +47,7 @@ const accountNumber = async (req, res, next) => {
 
 const accountBalance = async (req, res, next) => {
     try {
-        const account = await accountsService.getAccountId(req.params.id);
+        const account = await accountsService.getAccountId(req.user._id);
         if (!account) {
             return res.status(404).json({ message: "Conta não encontrada" })
         }
@@ -58,7 +58,7 @@ const accountBalance = async (req, res, next) => {
 }
 const accountDeposit = async (req, res, next) => {
     try {
-        const account = await accountsService.accountDeposit(req.params.id, req.body);
+        const account = await accountsService.accountDeposit(req.user._id, req.body);
         res.status(200).json(account);
 
     } catch (error) {
@@ -68,7 +68,7 @@ const accountDeposit = async (req, res, next) => {
 
 const accountWithdraw = async (req, res, next) => {
     try {
-        const accountWithdraw = await accountsService.accountWithdraw(req.params.id, req.body.amount);
+        const accountWithdraw = await accountsService.accountWithdraw(req.user._id, req.body.amount);
         res.status(200).json(accountWithdraw);
     } catch (error) {
         next(error)
@@ -85,7 +85,7 @@ const accountTransfer = async (req, res, next) => {
 }
 const accountsStatement = async (req, res, next) => {
     try {
-        const accountsStatement = await accountsService.accountsStatement(req.params.id);
+        const accountsStatement = await accountsService.accountsStatement(req.user._id);
         res.status(200).json(accountsStatement);
     } catch (error) {
         next(error)
@@ -93,7 +93,7 @@ const accountsStatement = async (req, res, next) => {
 }
 const accountWithdrawSimulate = async (req, res, next) => {
     try {
-        const accountWithdrawSimulate = await accountsService.accountWithdrawSimulate(req.params.id, req.body.value);
+        const accountWithdrawSimulate = await accountsService.accountWithdrawSimulate(req.user._id, req.body.value);
         res.status(200).json(accountWithdrawSimulate);
     } catch (error) {
         next(error)

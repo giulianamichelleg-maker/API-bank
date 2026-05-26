@@ -4,7 +4,7 @@ const register = async (req, res, next) => {
     try {
         const user = await authService.register(req.body)
         res.status(202).json({
-            message: "Odeio negrooooooooo registrado com sucesso",
+            message: "Usuário registrado com sucesso",
             data: user,
         })
     } catch (error) {
@@ -15,7 +15,7 @@ const login = async (req, res, next) => {
     try {
         const result = await authService.login(req.body)
         res.status(202).json({
-            message: "Login realizado com ssucesso",
+            message: "Login realizado com sucesso",
             data: result
         })
     } catch (error) {
