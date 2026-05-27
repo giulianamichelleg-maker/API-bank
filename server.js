@@ -4,11 +4,14 @@ setServers(["1.1.1.1", "8.8.8.8"]);
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import userRoutes from "./routes/userRoutes.js";
-import accountsRoutes from "./routes/accountsRoutes.js";
-import transactionRoutes from "./routes/transactionRoutes.js"
-import adminRoutes from "./routes/adminRoutes.js"
-import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/users/userRoutes.js";
+import accountsRoutes from "./routes/users/accountsRoutes.js";
+import transactionRoutes from "./routes/users/transactionRoutes.js"
+import adminRoutes from "./routes/admin/adminRoutes.js"
+import authRoutes from "./routes/users/authRoutes.js";
+import accountsAdminRoutes from "./routes/admin/accountsAdminRoutes.js";
+import userAdminRoutes from "./routes/admin/userAdminRoutes.js";
+import transactionsAdminRoutes from "./routes/admin/transactionAdminRoutes.js";
 
 
 
@@ -32,6 +35,18 @@ app.use("/accounts", accountsRoutes);
 app.use("/transactions", transactionRoutes);
 
 app.use("/admin", adminRoutes);
+
+app.use("/users", userAdminRoutes);
+
+app.use("/accounts", accountsAdminRoutes);
+
+app.use("/transactions", transactionsAdminRoutes);
+
+
+
+
+
+
 
 
 
