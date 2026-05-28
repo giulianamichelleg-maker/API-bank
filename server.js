@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.json({ message: "API de BANCO funcionando" });
+  res.json({ message: "API de BANCO com JWTfuncionando" });
 });
 
 app.use("/auth", authRoutes);
